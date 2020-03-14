@@ -1,8 +1,8 @@
 {
-    "name": "TS/R/WP Chrome Extension",
+    "name": "Remove Bloomberg Paywall",
     "version": "0.0.1",
     "manifest_version": 2,
-    "description": "Boilerplate for a Chrome extension with TypeScript, React, and Webpack.",
+    "description": "Remove Bloomberg Paywall",
     "homepage_url": "https://duo.com/labs",
     "icons": {
       "16": "icons/icon16.png",
@@ -21,13 +21,13 @@
       "persistent": true
     },
     "permissions": [
-      "https://*/*"
+      "https://www.bloomberg.com/news/articles/*"
     ],
     "content_security_policy": "default-src 'self';",
     "content_scripts": [
       {
         "matches": [
-          "https://*/*"
+          "https://www.bloomberg.com/news/articles/*"
         ],
         "js": [
           "js/content.js"
