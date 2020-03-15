@@ -3,12 +3,25 @@ chrome.runtime.sendMessage({}, (response) => {
         if (document.readyState === "complete") {
             clearInterval(checkReady)
             console.log("Running Bloomberg paywall extension!")
+            
+            try {
+                removePaywallElement(document)
+                enableScrolling(document)
+            } catch (error) {
+                
+            }
+
             listenForChildElementAndRemove()
         }
     })
 })
 
+const ePaywallId = "graphics-paywall-overlay"
 
+function removePaywallElement(d: Document) {
+    const e = document.getElementById(ePaywallId)
+    e.remove()
+}
 
 function enableScrolling(d: Document) {
     const attribute = "data-paywall-overlay-status"
@@ -19,7 +32,6 @@ function enableScrolling(d: Document) {
 
 function listenForChildElementAndRemove() {
     const targetNode = document.body
-    const ePaywallId = "graphics-paywall-overlay"
 
     // Options for the observer (which mutations to observe)
     const config = { childList: true };
