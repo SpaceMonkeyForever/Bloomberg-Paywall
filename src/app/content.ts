@@ -1,3 +1,5 @@
+const delayToRunMs = 3000
+
 chrome.runtime.sendMessage({}, (response) => {
     var checkReady = setInterval(() => {
         if (document.readyState === "complete") {
@@ -5,53 +7,63 @@ chrome.runtime.sendMessage({}, (response) => {
             console.log("Running Bloomberg paywall extension!")
             
             try {
-                removePaywallElement(document)
-                enableScrolling(document)
+                // simple way instead of listening to the element being added
+                setTimeout(runAll, delayToRunMs)
             } catch (error) {
                 
             }
-
-            listenForChildElementAndRemove()
         }
     })
 })
 
-const ePaywallId = "graphics-paywall-overlay"
+function runAll() {
+    method1()
+    method2()
+}
 
-function removePaywallElement(d: Document) {
-    const e = document.getElementById(ePaywallId)
+function method1() {
+    try {
+        removePaywallElement1()
+        enableScrolling()
+    }
+    catch(error) {}
+}
+
+function method2() {
+    try {
+        removePaywallElement2()
+        showHiddenArticle()
+    }
+    catch(error) {}
+}
+
+// There are two elements, either can appear
+const ePaywall1Id = "graphics-paywall-overlay"
+const ePaywall2Class = "paywall-inline-tout"
+
+function removePaywallElement1() {
+    const e = document.getElementById(ePaywall1Id)
     e.remove()
 }
 
-function enableScrolling(d: Document) {
+function removePaywallElement2() {
+    const es = document.getElementsByClassName(ePaywall2Class)
+    for (let i = 0; i < es.length; i++) {
+        const e = es[i];
+        e.remove()
+    }
+}
+
+
+function enableScrolling() {
     const attribute = "data-paywall-overlay-status"
     const selector = `[${attribute}*="show"]`
     const elements = [...document.querySelectorAll(selector)]
     elements.forEach(e => e.setAttribute(attribute, "hide"))
 }
 
-function listenForChildElementAndRemove() {
-    const targetNode = document.body
-
-    // Options for the observer (which mutations to observe)
-    const config = { childList: true };
-
-    // Callback function to execute when mutations are observed
-    const observe = function(mutationsList, observer) {
-        // Use traditional 'for loops' for IE 11
-        for(let mutation of mutationsList) {
-            if (mutation.type === 'childList') {
-                mutation.addedNodes.forEach(childElement => {
-                    if (childElement.id == ePaywallId) {
-                        childElement.remove()
-                        enableScrolling(document)
-                        // observer.disconnect()
-                    }
-                })
-            }
-        }
-    };
-
-    const observer = new MutationObserver(observe);
-    observer.observe(targetNode, config);
+function showHiddenArticle() {
+    const selector = `p[style*="display: none;"]`
+    const elements = [...document.querySelectorAll(selector)]
+    elements.forEach(e => e.setAttribute("style", ""))
 }
