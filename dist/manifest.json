@@ -21,13 +21,13 @@
       "persistent": true
     },
     "permissions": [
-      "https://www.bloomberg.com/*/articles/*"
+      "https://www.bloomberg.com/**"
     ],
     "content_security_policy": "default-src 'self';",
     "content_scripts": [
       {
         "matches": [
-          "https://www.bloomberg.com/*/articles/*"
+          "https://www.bloomberg.com/*"
         ],
         "js": [
           "js/content.js"
