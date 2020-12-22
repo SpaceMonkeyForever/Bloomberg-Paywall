@@ -52,7 +52,7 @@ class PaywallRemover
     }
 
     static showHiddenArticle() {
-        const selector = `p[style*="display: none;"]`
+        const selector = `[style*="display: none;"]`
         const elements = [...document.querySelectorAll(selector)]
         elements.forEach(e => e.setAttribute("style", ""))
     }
