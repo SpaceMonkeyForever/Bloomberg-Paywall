@@ -14,6 +14,7 @@ chrome.runtime.onMessage.addListener((request) => {
 class PaywallRemover
 {
     static runBothCases() {
+        console.log("Removing paywall.");
         PaywallRemover.case1()
         PaywallRemover.case2()
     }
@@ -56,4 +57,10 @@ class PaywallRemover
         const elements = [...document.querySelectorAll(selector)]
         elements.forEach(e => e.setAttribute("style", ""))
     }
+}
+
+window.addEventListener('load', afterWindowLoaded);
+
+function afterWindowLoaded() {
+    setTimeout(PaywallRemover.runBothCases, 1000);
 }
